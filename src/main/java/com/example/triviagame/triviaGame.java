@@ -3,27 +3,20 @@ package com.example.triviagame;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
-import javafx.scene.text.Text;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.net.URL;
+
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.net.http.HttpRequest;
-import java.nio.charset.StandardCharsets;
-import java.net.URLEncoder;
 
 public class triviaGame extends Application {
     private Label questionLabel;
@@ -73,13 +66,13 @@ public class triviaGame extends Application {
         root.setStyle("-fx-padding: 20px; -fx-alignment: center;");
         buttonsArea.setStyle("-fx-padding: 20px; -fx-alignment: center;");
 
-        this.parseQuestion();
         Scene scene = new Scene(root, 400, 300);
         stage.setTitle("Trivia Game");
         stage.setScene(scene);
         stage.setOnCloseRequest(event -> Platform.exit());
         stage.sizeToScene();
         stage.show();
+        this.parseQuestion();
     }
 
     public void parseQuestion() {
@@ -92,6 +85,8 @@ public class triviaGame extends Application {
             }
             String jsonString = response.body();
             System.out.println(jsonString);
+            triviaResponse tResponse = GSON.fromJson(jsonString, triviaResponse.class);
+            this.buttonOne.setText(tResponse.results[0].correct_answer);
         } catch (IOException | InterruptedException e) {
             System.err.println(e);
         }
