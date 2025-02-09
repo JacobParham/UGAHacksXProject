@@ -4,12 +4,13 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import java.util.Base64;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Random;
 import java.io.IOException;
 import java.net.URI;
@@ -17,6 +18,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.net.http.HttpRequest;
+import java.util.Base64;
 
 public class triviaGame extends Application {
     private Label questionLabel;
@@ -29,7 +31,7 @@ public class triviaGame extends Application {
     private Button buttonFour;
     private Button nextButton;
     private VBox buttonsArea;
-    private static final String API_URL = "https://opentdb.com/api.php?amount=10&type=multiple";
+    private static final String API_URL = "https://opentdb.com/api.php?amount=10&type=multiple&encode=base64";
     private triviaResponse tResponse;
     private int round;
     /**
@@ -47,6 +49,8 @@ public class triviaGame extends Application {
     public triviaGame() {
         this.points = 0;
         this.questionLabel = new Label("Loading question...");
+        this.questionLabel.setWrapText(true);
+        this.questionLabel.setMaxWidth(200.0);
         this.optionsBox = new VBox(10);
         this.scoreLabel = new Label("Points: 0");
         this.buttonsArea = new VBox(20);
@@ -72,7 +76,7 @@ public class triviaGame extends Application {
         this.buttonThree.setOnAction(e -> this.answerClicked(tResponse,round,buttonThree));
         this.buttonFour.setOnAction(e -> this.answerClicked(tResponse,round,buttonFour));
 
-        Scene scene = new Scene(root, 600, 500);
+        Scene scene = new Scene(root, 800, 700);
         stage.setTitle("Trivia Game");
         stage.setScene(scene);
         stage.setOnCloseRequest(event -> Platform.exit());
@@ -99,43 +103,79 @@ public class triviaGame extends Application {
     }
 
     public void setQuestions(triviaResponse response, int pos) {
-        this.questionLabel.setText(response.results[pos].question);
+        try {
+            byte[] decoded = Base64.getDecoder().decode(response.results[pos].question);
+            String decodedQuestion = new String(decoded, StandardCharsets.UTF_8);
+            this.questionLabel.setText(decodedQuestion);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         Random random = new Random();
         int num = random.nextInt(4);
         int incNum = 0;
-        if (num == 0) {
-            this.buttonOne.setText(response.results[pos].correct_answer);
-        }
-        else {
-            this.buttonOne.setText(response.results[pos].incorrect_answers[incNum]);
-            incNum++;
-        }
-        if (num == 1) {
-            this.buttonTwo.setText(response.results[pos].correct_answer);
-        }
-        else {
-            this.buttonTwo.setText(response.results[pos].incorrect_answers[incNum]);
-            incNum++;
-        }
-        if (num == 2) {
-            this.buttonThree.setText(response.results[pos].correct_answer);
-        }
-        else {
-            this.buttonThree.setText(response.results[pos].incorrect_answers[incNum]);
-            incNum++;
-        }
-        if (num == 3) {
-            this.buttonFour.setText(response.results[pos].correct_answer);
-        }
-        else {
-            this.buttonFour.setText(response.results[pos].incorrect_answers[incNum]);
+        byte[] decodedOne;
+        byte[] decodedTwo;
+        byte[] decodedThree;
+        byte[] decodedFour;
+        String decodedStringOne;
+        String decodedStringTwo;
+        String decodedStringThree;
+        String decodedStringFour;
+        try {
+            if (num == 0) {
+                decodedOne = Base64.getDecoder().decode(response.results[pos].correct_answer);
+                decodedStringOne = new String(decodedOne, StandardCharsets.UTF_8);
+                this.buttonOne.setText(decodedStringOne);
+            } else {
+                decodedOne = Base64.getDecoder().decode(response.results[pos].incorrect_answers[incNum]);
+                decodedStringOne = new String(decodedOne, StandardCharsets.UTF_8);
+                this.buttonOne.setText(decodedStringOne);
+                incNum++;
+            }
+            if (num == 1) {
+                decodedTwo = Base64.getDecoder().decode(response.results[pos].correct_answer);
+                decodedStringTwo = new String(decodedTwo, StandardCharsets.UTF_8);
+                this.buttonTwo.setText(decodedStringTwo);
+            } else {
+                decodedTwo = Base64.getDecoder().decode(response.results[pos].incorrect_answers[incNum]);
+                decodedStringTwo = new String(decodedTwo, StandardCharsets.UTF_8);
+                this.buttonTwo.setText(decodedStringTwo);
+                incNum++;
+            }
+            if (num == 2) {
+                decodedThree = Base64.getDecoder().decode(response.results[pos].correct_answer);
+                decodedStringThree = new String(decodedThree, StandardCharsets.UTF_8);
+                this.buttonThree.setText(decodedStringThree);
+            } else {
+                decodedThree = Base64.getDecoder().decode(response.results[pos].incorrect_answers[incNum]);
+                decodedStringThree = new String(decodedThree, StandardCharsets.UTF_8);
+                this.buttonThree.setText(decodedStringThree);
+                incNum++;
+            }
+            if (num == 3) {
+                decodedFour = Base64.getDecoder().decode(response.results[pos].correct_answer);
+                decodedStringFour = new String(decodedFour, StandardCharsets.UTF_8);
+                this.buttonFour.setText(decodedStringFour);
+            } else {
+                decodedFour = Base64.getDecoder().decode(response.results[pos].incorrect_answers[incNum]);
+                decodedStringFour = new String(decodedFour, StandardCharsets.UTF_8);
+                this.buttonFour.setText(decodedStringFour);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
     public void answerClicked(triviaResponse response, int pos, Button choice) {
-        if (choice.getText().equals(response.results[pos].correct_answer)) {
-            this.points++;
-            this.scoreLabel.setText("Points: " + points);
+        try {
+            byte[] decodedAns = Base64.getDecoder().decode(response.results[pos].correct_answer);
+            String decodedStringAns = new String(decodedAns, StandardCharsets.UTF_8);
+            if (choice.getText().equals(decodedStringAns)) {
+                this.points++;
+                this.scoreLabel.setText("Points: " + points);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         this.round++;
            if (round < 10) {
@@ -147,6 +187,10 @@ public class triviaGame extends Application {
             this.buttonTwo.setDisable(true);
             this.buttonThree.setDisable(true);
             this.buttonFour.setDisable(true);
+            this.buttonOne.setVisible(false);
+            this.buttonTwo.setVisible(false);
+            this.buttonThree.setVisible(false);
+            this.buttonFour.setVisible(false);
         }
     }
 }

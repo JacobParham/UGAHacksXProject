@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7bc7e8c7-317a-4ad0-ae27-ad84b94a8a01" name="Changes" comment="created gui elements and api commit">
+    <list default="true" id="7bc7e8c7-317a-4ad0-ae27-ad84b94a8a01" name="Changes" comment="base trivia game complete">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/triviagame/triviaGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/triviagame/triviaGame.java" afterDir="false" />
     </list>
@@ -99,12 +99,21 @@
       <option name="project" value="LOCAL" />
       <updated>1738998837410</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="base trivia game complete">
+      <option name="closed" value="true" />
+      <created>1739045413004</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1739045413004</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init commit" />
     <MESSAGE value="created gui elements and api commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="created gui elements and api commit" />
+    <MESSAGE value="base trivia game complete" />
+    <option name="LAST_COMMIT_MESSAGE" value="base trivia game complete" />
   </component>
 </project>
