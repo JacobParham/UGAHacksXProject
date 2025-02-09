@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
 import java.io.IOException;
@@ -25,12 +24,12 @@ public class triviaGame extends Application {
     private VBox optionsBox;
     private Label scoreLabel;
     private int points;
-    private Button buttonOne;
-    private Button buttonTwo;
-    private Button buttonThree;
-    private Button buttonFour;
-    private Button nextButton;
-    private VBox buttonsArea;
+    private final Button buttonOne;
+    private final Button buttonTwo;
+    private final Button buttonThree;
+    private final Button buttonFour;
+    private final Button playButton;
+    private final VBox buttonsArea;
     private static final String API_URL = "https://opentdb.com/api.php?amount=10&type=multiple&encode=base64";
     private triviaResponse tResponse;
     private int round;
@@ -58,16 +57,19 @@ public class triviaGame extends Application {
         this.buttonTwo = new Button("");
         this.buttonThree = new Button("");
         this.buttonFour = new Button("");
+        this.playButton = new Button("Play again");
         VBox root = new VBox(20, questionLabel, optionsBox, scoreLabel);
         root.setStyle("-fx-padding: 20px; -fx-alignment: center;");
     }
 
     @Override
     public void start(Stage stage) {
+        this.playButton.setDisable(true);
+        this.playButton.setVisible(false);
         questionLabel = new Label("Loading question...");
         optionsBox = new VBox(10);
         scoreLabel = new Label("Score: 0");
-        this.buttonsArea.getChildren().addAll(this.buttonOne, this.buttonTwo, this.buttonThree, this.buttonFour);
+        this.buttonsArea.getChildren().addAll(this.buttonOne, this.buttonTwo, this.buttonThree, this.buttonFour,this.playButton);
         VBox root = new VBox(20, questionLabel, optionsBox, scoreLabel, buttonsArea);
         root.setStyle("-fx-padding: 20px; -fx-alignment: center;");
         buttonsArea.setStyle("-fx-padding: 20px; -fx-alignment: center;");
@@ -75,7 +77,7 @@ public class triviaGame extends Application {
         this.buttonTwo.setOnAction(e -> this.answerClicked(tResponse,round,buttonTwo));
         this.buttonThree.setOnAction(e -> this.answerClicked(tResponse,round,buttonThree));
         this.buttonFour.setOnAction(e -> this.answerClicked(tResponse,round,buttonFour));
-
+        this.playButton.setOnAction(e -> this.playAgain());
         Scene scene = new Scene(root, 800, 700);
         stage.setTitle("Trivia Game");
         stage.setScene(scene);
@@ -172,7 +174,7 @@ public class triviaGame extends Application {
             String decodedStringAns = new String(decodedAns, StandardCharsets.UTF_8);
             if (choice.getText().equals(decodedStringAns)) {
                 this.points++;
-                this.scoreLabel.setText("Points: " + points);
+                this.scoreLabel.setText("Score: " + points);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -191,6 +193,25 @@ public class triviaGame extends Application {
             this.buttonTwo.setVisible(false);
             this.buttonThree.setVisible(false);
             this.buttonFour.setVisible(false);
+            this.playButton.setVisible(true);
+            this.playButton.setDisable(false);
         }
+    }
+
+    public void playAgain() {
+        this.points = 0;
+        this.scoreLabel.setText("Score: 0");
+        this.parseQuestion();
+        this.buttonOne.setDisable(false);
+        this.buttonTwo.setDisable(false);
+        this.buttonThree.setDisable(false);
+        this.buttonFour.setDisable(false);
+        this.buttonOne.setVisible(true);
+        this.buttonTwo.setVisible(true);
+        this.buttonThree.setVisible(true);
+        this.buttonFour.setVisible(true);
+        this.playButton.setVisible(false);
+        this.playButton.setDisable(true);
+        this.round = 0;
     }
 }
