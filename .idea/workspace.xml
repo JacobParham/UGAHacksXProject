@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7bc7e8c7-317a-4ad0-ae27-ad84b94a8a01" name="Changes" comment="added base64 encoding and decoding">
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/triviagame/triviaGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/triviagame/triviaGame.java" afterDir="false" />
+    <list default="true" id="7bc7e8c7-317a-4ad0-ae27-ad84b94a8a01" name="Changes" comment="added play again button">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,7 +114,15 @@
       <option name="project" value="LOCAL" />
       <updated>1739069841428</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="added play again button">
+      <option name="closed" value="true" />
+      <created>1739070451861</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1739070451861</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -122,6 +130,7 @@
     <MESSAGE value="created gui elements and api commit" />
     <MESSAGE value="base trivia game complete" />
     <MESSAGE value="added base64 encoding and decoding" />
-    <option name="LAST_COMMIT_MESSAGE" value="added base64 encoding and decoding" />
+    <MESSAGE value="added play again button" />
+    <option name="LAST_COMMIT_MESSAGE" value="added play again button" />
   </component>
 </project>
